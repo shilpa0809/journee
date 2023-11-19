@@ -1,29 +1,56 @@
 import React, { useEffect, useRef } from "react";
 import styled from "styled-components";
-import { addTodo, editTodo } from "../actions/todo/todoAC";
+import { addTodo, editTodo, removeTodo } from "../actions/todo/todoAC";
 import { Item, useAppDispatch, useAppSelector } from "../types/types";
 
 const List = styled.ul`
   width: 100%;
   box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
+  padding: 0;
+  list-style: none;
 `;
 
 const ItemContainer = styled.li`
   width: 100%;
-  margin: 4px 0;
+  margin: 10px 0;
   display: flex;
-  flex-direction: row;
-`;
+  align-items: center;
+  border-radius: 4px;
+  background-color: #f5f5f5;
+  transition: background-color 0.3s ease;
+  padding: 8px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
 
-const ItemInput = styled.input`
-  width: 100%;
+  &:hover {
+    background-color: #e0e0e0;
+  }
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 12px;
+  }
 `;
 
 const ItemCheckbox = styled.input.attrs({
   type: "checkbox",
-})``;
+})`
+  margin-right: 10px;
+`;
+
+const ItemInput = styled.input`
+  width: 100%;
+  padding: 8px;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 14px;
+
+  @media (max-width: 768px) {
+    width: calc(100% - 30px);
+    margin-top: 10px;
+  }
+`;
 
 const TodoItem: React.FC<{ item: Item | null }> = ({ item }) => {
   const dispatch = useAppDispatch();
@@ -34,7 +61,15 @@ const TodoItem: React.FC<{ item: Item | null }> = ({ item }) => {
     if (inputRef.current) {
       inputRef.current.focus();
     }
-  }, []);
+  }, [item]);
+
+  useEffect(() => {
+    const focusedElement = document.activeElement;
+    if (item && inputRef.current && inputRef.current !== focusedElement && inputRef.current.value.trim() === '') {
+      // Pass the item ID to the removeTodo action
+      dispatch(removeTodo(item.id));
+    }
+  }, [item, dispatch]);
 
   const handleChange = (value: string) => {
     if (item) {
@@ -50,6 +85,7 @@ const TodoItem: React.FC<{ item: Item | null }> = ({ item }) => {
       <ItemInput
         type="text"
         value={item ? item.text : ""}
+        placeholder="Enter your task..."
         onChange={(e) => handleChange(e.target.value)}
         ref={inputRef} // Assign the ref to the input element
       />
