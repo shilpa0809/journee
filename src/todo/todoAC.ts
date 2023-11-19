@@ -6,18 +6,26 @@ export const ITEM_REMOVE = "ITEM_REMOVE";
 
 export type TodoAction = AddTodoAction | EditTodoAction;
 
-export interface AddTodoAction extends Action<typeof ITEM_ADD> {
+interface BaseAction extends Action {
+  type: string;
+}
+
+export interface AddTodoAction extends BaseAction {
+  type: typeof ITEM_ADD;
   text: string;
 }
+
 export const addTodo = (text: string): AddTodoAction => ({
   type: ITEM_ADD,
   text,
 });
 
-export interface EditTodoAction extends Action<typeof ITEM_EDIT> {
+export interface EditTodoAction extends BaseAction {
+  type: typeof ITEM_EDIT;
   itemId: string;
   text: string;
 }
+
 export const editTodo = (itemId: string, text: string): EditTodoAction => ({
   type: ITEM_EDIT,
   itemId,
