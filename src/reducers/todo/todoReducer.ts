@@ -1,12 +1,7 @@
 import { produce } from 'immer';
-import { getNewId } from '../utils';
-import { ITEM_ADD, ITEM_EDIT, TodoAction } from './todoAC';
-
-interface Item {
-  id: string;
-  text: string;
-  done: boolean;
-}
+import { getNewId } from '../../utils/utils';
+import { ITEM_ADD, ITEM_EDIT, TodoAction } from '../../actions/todo/todoAC';
+import { Item } from '../../types/types';
 
 interface State {
   items: Item[];

@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import styled from "styled-components";
-import { addTodo, editTodo } from "../todo/todoAC";
-import { useAppDispatch, useAppSelector } from "../types";
+import { addTodo, editTodo } from "../actions/todo/todoAC";
+import { Item, useAppDispatch, useAppSelector } from "../types/types";
 
 const List = styled.ul`
   width: 100%;
@@ -25,7 +25,7 @@ const ItemCheckbox = styled.input.attrs({
   type: "checkbox",
 })``;
 
-const Item: React.FC<{ item: any | null }> = ({ item }) => {
+const TodoItem: React.FC<{ item: Item | null }> = ({ item }) => {
   const dispatch = useAppDispatch();
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -58,14 +58,14 @@ const Item: React.FC<{ item: any | null }> = ({ item }) => {
 };
 
 const ItemList: React.FC = () => {
-  const items = useAppSelector((s) => s.todos.items);
+  const items: Item[] = useAppSelector((s) => s.todos.items);
 
   return (
     <List>
       {items.map((item) => (
-        <Item key={item.id} item={item} />
+        <TodoItem key={item.id} item={item} />
       ))}
-      <Item key="new" item={null} />
+      <TodoItem key="new" item={null} />
     </List>
   );
 };
