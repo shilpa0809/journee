@@ -1,6 +1,6 @@
 import { produce } from 'immer';
 import { getNewId } from '../../utils/utils';
-import { ITEM_ADD, ITEM_EDIT, TodoAction } from '../../actions/todo/todoAC';
+import { ITEM_ADD, ITEM_EDIT, ITEM_REMOVE, TodoAction } from '../../actions/todo/todoAC';
 import { Item } from '../../types/types';
 
 interface State {
@@ -29,6 +29,11 @@ const todoReducer = (state: State = initialState, action: TodoAction): State => 
         if (index !== -1) {
           draftState.items[index].text = text;
         }
+        break;
+      }
+      case ITEM_REMOVE: {
+        const { itemId } = action;
+        draftState.items = draftState.items.filter((item) => item.id !== itemId);
         break;
       }
       default:
