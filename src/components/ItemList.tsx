@@ -63,13 +63,16 @@ const TodoItem: React.FC<{ item: Item | null }> = ({ item }) => {
     }
   }, [item]);
 
+  const items: Item[] = useAppSelector((s) => s.todos.items);
+
+  // This will remove the input items if its blank and not focused
   useEffect(() => {
     const focusedElement = document.activeElement;
     if (item && inputRef.current && inputRef.current !== focusedElement && inputRef.current.value.trim() === '') {
       // Pass the item ID to the removeTodo action
-      dispatch(removeTodo(item.id));
+        dispatch(removeTodo(item.id));
     }
-  }, [item, dispatch]);
+  }, [items, item, dispatch]);
 
   const handleChange = (value: string) => {
     if (item) {
