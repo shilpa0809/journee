@@ -19,7 +19,7 @@ const ItemContainer = styled.li`
   background-color: #f5f5f5;
   transition: background-color 0.3s ease;
   padding: 8px;
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  border: 1px solid #ccc; /* Border to differentiate items */
 
   &:hover {
     background-color: #e0e0e0;
